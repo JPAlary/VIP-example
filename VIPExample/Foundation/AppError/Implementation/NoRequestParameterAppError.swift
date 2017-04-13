@@ -1,14 +1,14 @@
 //
-//  ExpectsContentAppError.swift
-//  MVVMExample
+//  NoRequestParameterAppError.swift
+//  VIPExample
 //
-//  Created by Jean-Pierre Alary on 08/04/2017.
+//  Created by Jean-Pierre Alary on 12/04/2017.
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-struct ExpectsContentAppError: AppError {
+struct NoRequestParameterAppError: AppError {
     private enum Constant {
-        static let translationKey = "error.global"
+        static let translationKey = "error.global.default"
     }
 
     // MARK: AppError

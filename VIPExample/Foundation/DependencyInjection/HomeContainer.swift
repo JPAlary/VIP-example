@@ -8,7 +8,7 @@
 
 import Swinject
 
-final class HomeContainer {
+final class HomeContainer: AppContainer {
     private let container: Container
 
     // MARK: Initializer
@@ -19,8 +19,18 @@ final class HomeContainer {
         register()
     }
 
+    // MARK: AppContainer
+
+    func getChild() -> Container {
+        return Container(parent: container)
+    }
+
     func resolve<Service>(serviceType: Service.Type) -> Service? {
         return container.resolve(serviceType)
+    }
+
+    func resolve<Service>(serviceType: Service.Type, name: String) -> Service? {
+        return container.resolve(serviceType, name: name)
     }
 
     // MARK: Private
@@ -47,8 +57,8 @@ final class HomeContainer {
             .inObjectScope(.container)
 
         container
-            .register(AnyViewType<HomeViewModel>.self) { (_) -> AnyViewType<HomeViewModel> in
-                AnyViewType(base: HomeView())
+            .register(AnyRouter<Void>.self) { (_) -> AnyRouter<Void> in
+                AnyRouter(base: HomeRouter(container: EditContainer(container: self.getChild())))
             }
             .inObjectScope(.container)
 
@@ -57,7 +67,8 @@ final class HomeContainer {
                 HomeViewController(
                     interactor: r.resolve(Interactor.self)!,
                     presenter: r.resolve(AnyPresenter<HomeViewModel>.self)!,
-                    viewType: r.resolve(AnyViewType<HomeViewModel>.self)!
+                    router: r.resolve(AnyRouter<Void>.self)!,
+                    viewType: AnyViewType(base: HomeView())
                 )
             }
             .inObjectScope(.container)

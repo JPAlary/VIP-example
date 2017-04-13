@@ -6,7 +6,7 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-struct LoadingEventResponse<T>: EventResponse {
+struct LoadingEventResponse: EventResponse {
 
     // MARK: EventResponse
 
@@ -14,11 +14,17 @@ struct LoadingEventResponse<T>: EventResponse {
         return true
     }
 
-    var data: EventResponseDataType? {
-        return ViewState<T>.loading
+    var data: [String: Any]? {
+        return [
+            EventParameterKey.viewState: ViewState.loading
+        ]
     }
 
     var error: Error? {
         return nil
+    }
+
+    var code: EventResponseCode {
+        return .processing
     }
 }

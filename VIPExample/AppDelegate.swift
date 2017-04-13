@@ -10,13 +10,14 @@ import UIKit
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let container: AppContainer = AppContainer()
+    private let container: AppContainer = MainContainer()
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow()
-        window.rootViewController = HomeContainer(container: container.getChild()).resolve(serviceType: HomeViewController.self)!
+        window.rootViewController = HomeContainer(container: container.getChild())
+            .resolve(serviceType: HomeViewController.self)!
 
         self.window = window
         self.window?.makeKeyAndVisible()

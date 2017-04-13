@@ -20,57 +20,55 @@ struct HomePresenter: Presenter {
 
     // MARK: Presenter
 
-    func handle(response: EventResponse) -> ViewState<HomeViewModel> {
-        if let state = hasError(in: response) {
-            return state
-        }
+    func handle(response: EventResponse) -> HomeViewModel {
+        switch response.code {
+        case .ok:
+            guard let user: User = response.dataValue() else {
+                assertionFailure("Should have data")
 
-        if let state = hasState(in: response) {
-            return state
-        }
+                return HomeViewModel(
+                    state: .error(message: translator.translation(for: "error.generic.message")),
+                    buttonTitle: buttonTitleTranslation
+                )
+            }
 
-        if let state = hasObject(in: response) {
-            return state
-        }
+            return HomeViewModel(
+                state: .success,
+                buttonTitle: buttonTitleTranslation,
+                name: user.name,
+                surname: user.surname,
+                age: user.age
+            )
+        case .badRequest:
+            var state: ViewState
 
-        return .error(message: translator.translation(for: "error.generic.message"))
+            if let appError = response.error as? AppError {
+                assertionFailure("Should be instance of AppError")
+                state = .error(message: translator.translation(for: appError.messageKey))
+            } else {
+                state = .error(message: translator.translation(for: "error.generic.message"))
+            }
+
+            return HomeViewModel(
+                state: state,
+                buttonTitle: buttonTitleTranslation
+            )
+        case .processing:
+            return HomeViewModel(
+                state: .loading,
+                buttonTitle: buttonTitleTranslation
+            )
+        default:
+            return HomeViewModel(
+                state: .error(message: translator.translation(for: "error.generic.message")),
+                buttonTitle: buttonTitleTranslation
+            )
+        }
     }
 
     // MARK: Private
 
-    func hasError(in response: EventResponse) -> ViewState<HomeViewModel>? {
-        guard let error = response.error else {
-            return nil
-        }
-
-        guard let appError = error as? AppError else {
-            assertionFailure("Should be instance of AppError")
-
-            return .error(message: translator.translation(for: "error.generic.message"))
-        }
-
-        return .error(message: translator.translation(for: appError.messageKey))
-    }
-
-    func hasState(in response: EventResponse) -> ViewState<HomeViewModel>? {
-        if let state = response.data as? ViewState<HomeViewModel> {
-            return state
-        } else {
-            return nil
-        }
-    }
-
-    func hasObject(in response: EventResponse) -> ViewState<HomeViewModel>? {
-        guard let result = response.data as? Result<User> else {
-            return nil
-        }
-
-        if case .value(let user) = result {
-            return .success(HomeViewModel(name: user.name, surname: user.surname, age: user.age))
-        } else {
-            assertionFailure("Should be instance of AppError")
-
-            return .error(message: translator.translation(for: "error.generic.message"))
-        }
+    var buttonTitleTranslation: String {
+        return translator.translation(for: "home.button.title")
     }
 }

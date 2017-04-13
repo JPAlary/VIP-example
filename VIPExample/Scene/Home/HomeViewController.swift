@@ -14,19 +14,20 @@ final class HomeViewController: UIViewController {
     private let disposeBag: DisposeBag
     private let interactor: Interactor
     private let presenter: AnyPresenter<HomeViewModel>
+    private let router: AnyRouter<Void>
     private let viewType: AnyViewType<HomeViewModel>
-
-    // MARK: Nested
-
-    enum Action: AppAction {
-        case viewDidLoad
-    }
 
     // MARK: Initializer
 
-    init(interactor: Interactor, presenter: AnyPresenter<HomeViewModel>, viewType: AnyViewType<HomeViewModel>) {
+    init(
+        interactor: Interactor,
+        presenter: AnyPresenter<HomeViewModel>,
+        router: AnyRouter<Void>,
+        viewType: AnyViewType<HomeViewModel>
+    ) {
         self.interactor = interactor
         self.presenter = presenter
+        self.router = router
         self.viewType = viewType
 
         disposeBag = DisposeBag()
@@ -49,14 +50,28 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let output = interactor
-            .handle(request: AppEventRequest(_action: Action.viewDidLoad))
+        let routerResult = viewType
+            .request()
+            .map { _ in EventRequest(action: .navigate) }
+            .withLatestFrom(Observable.just(router)) { $0 }
+            .flatMap({ (request, router) -> Observable<EventResponse> in
+                return router.route(from: self, request: request)
+            })
             .withLatestFrom(Observable.just(presenter)) { $0 }
             .map { $1.handle(response: $0) }
-            .asDriver { (e) -> SharedSequence<DriverSharingStrategy, ViewState<HomeViewModel>> in
-                return Driver.just(.loading)
+
+        let output = interactor
+            .handle(request: EventRequest(action: .viewDidLoad))
+            .withLatestFrom(Observable.just(presenter)) { $0 }
+            .map { $1.handle(response: $0) }
+
+        let provider = Observable
+            .of(routerResult, output)
+            .merge()
+            .asDriver { (e) -> SharedSequence<DriverSharingStrategy, HomeViewModel> in
+                return Driver.never()
             }
 
-        viewType.update(with: output)
+        viewType.update(with: provider)
     }
 }

@@ -32,7 +32,11 @@ final class UserRepository: Repository {
     }
 
     func edit(with parameter: RepositoryParameter) -> Observable<Result<User>> {
-        fatalError("edit is not implemented")
+        guard let userParameter = parameter as? EditUserParameter else {
+            return Observable.error(ParameterTypeAppError(developerMessage: "Parameter should be typed EditUserParameter"))
+        }
+
+        return httpClient.request(endpoint: HTTPBinEndpoint.edit(with: userParameter))
     }
 
     func delete(with parameter: RepositoryParameter) -> Observable<Result<User>> {

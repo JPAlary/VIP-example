@@ -9,5 +9,5 @@
 protocol Presenter {
     associatedtype T
 
-    func handle(response: EventResponse) -> ViewState<T>
+    func handle(response: EventResponse) -> T
 }

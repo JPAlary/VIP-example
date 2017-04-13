@@ -6,8 +6,8 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-enum ViewState<T>: EventResponseDataType {
+enum ViewState {
     case loading
     case error(message: String)
-    case success(T)
+    case success
 }

@@ -8,13 +8,15 @@
 
 import UIKit
 import RxCocoa
+import RxSwift
 
 protocol ViewType {
     associatedtype T
 
     var view: UIView { get }
 
-    func update(with stateProvider: Driver<ViewState<T>>) -> Void
+    func request() -> Observable<EventRequest>
+    func update(with provider: Driver<T>) -> Void
 }
 
 extension ViewType where Self: UIView {

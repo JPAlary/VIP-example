@@ -7,7 +7,7 @@
 //
 
 final class AnyPresenter<T>: Presenter {
-    private let _handle: (EventResponse) -> ViewState<T>
+    private let _handle: (EventResponse) -> T
 
     // MARK: Initializer
 
@@ -17,7 +17,7 @@ final class AnyPresenter<T>: Presenter {
 
     // MARK: Presenter
 
-    func handle(response: EventResponse) -> ViewState<T> {
+    func handle(response: EventResponse) -> T {
         return _handle(response)
     }
 }

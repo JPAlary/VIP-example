@@ -6,11 +6,13 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
+import RxSwift
 import RxCocoa
 
 final class AnyViewType<T>: ViewType {
     private let _view: () -> UIView
-    private let _update: (Driver<ViewState<T>>) -> Void
+    private let _request: () -> Observable<EventRequest>
+    private let _update: (Driver<T>) -> Void
 
     // MARK: Initializer
 
@@ -18,6 +20,7 @@ final class AnyViewType<T>: ViewType {
         _view = {
             return base.view
         }
+        _request = base.request
         _update = base.update
     }
 
@@ -27,7 +30,11 @@ final class AnyViewType<T>: ViewType {
         return _view()
     }
 
-    func update(with stateProvider: Driver<ViewState<T>>) -> Void {
+    func request() -> Observable<EventRequest> {
+        return _request()
+    }
+
+    func update(with stateProvider: Driver<T>) -> Void {
         return _update(stateProvider)
     }
 }

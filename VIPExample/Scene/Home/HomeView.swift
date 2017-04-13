@@ -16,6 +16,7 @@ final class HomeView: UIView, ViewType {
     private let nameLabel: UILabel
     private let surnameLabel: UILabel
     private let ageLabel: UILabel
+    private let button: UIButton
     private let activityIndicator: UIActivityIndicatorView
 
     // MARK: Initializer
@@ -24,6 +25,7 @@ final class HomeView: UIView, ViewType {
         nameLabel = UILabel()
         surnameLabel = UILabel()
         ageLabel = UILabel()
+        button = UIButton()
         activityIndicator = UIActivityIndicatorView()
 
         super.init(frame: CGRect.zero)
@@ -39,10 +41,18 @@ final class HomeView: UIView, ViewType {
 
     // MARK: ViewType
 
-    func update(with stateProvider: Driver<ViewState<HomeViewModel>>) -> Void {
-        stateProvider
-            .map { (state) -> Bool in
-                if case .loading = state {
+    func request() -> Observable<EventRequest> {
+        return button
+            .rx
+            .tap
+            .asObservable()
+            .map { EventRequest(action: .tap) }
+    }
+
+    func update(with provider: Driver<HomeViewModel>) -> Void {
+        provider
+            .map { (viewModel) -> Bool in
+                if case .loading = viewModel.state {
                     return true
                 } else {
                     return false
@@ -51,9 +61,9 @@ final class HomeView: UIView, ViewType {
             .drive(activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
 
-        stateProvider
-            .drive(onNext: { (state) in
-                switch state {
+        provider
+            .drive(onNext: { (viewModel) in
+                switch viewModel.state {
                 case .error(let message):
                     print("You should display a nice view and put \(message)")
                 default:
@@ -62,37 +72,24 @@ final class HomeView: UIView, ViewType {
             })
             .disposed(by: disposeBag)
 
-        stateProvider
-            .map { (state) -> String? in
-                if case .success(let viewModel) = state {
-                    return viewModel.name
-                }
-
-                return nil
-            }
+        provider
+            .map { $0.name }
             .drive(nameLabel.rx.text)
             .disposed(by: disposeBag)
 
-        stateProvider
-            .map { (state) -> String? in
-                if case .success(let viewModel) = state {
-                    return viewModel.surname
-                }
-
-                return nil
-            }
+        provider
+            .map { $0.surname }
             .drive(surnameLabel.rx.text)
             .disposed(by: disposeBag)
 
-        stateProvider
-            .map { (state) -> String? in
-                if case .success(let viewModel) = state {
-                    return viewModel.age
-                }
-
-                return nil
-            }
+        provider
+            .map { $0.age }
             .drive(ageLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        provider
+            .map { $0.buttonTitle }
+            .drive(button.rx.title())
             .disposed(by: disposeBag)
     }
     
@@ -111,6 +108,11 @@ final class HomeView: UIView, ViewType {
         activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.hidesWhenStopped = true
         addSubview(activityIndicator)
+
+        button.backgroundColor = UIColor.blue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 5.0
+        addSubview(button)
 
         activityIndicator.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
@@ -133,6 +135,13 @@ final class HomeView: UIView, ViewType {
             make.top.equalTo(surnameLabel.snp.bottom).offset(20.0)
             make.left.equalToSuperview().offset(20.0)
             make.right.equalToSuperview().offset(-20.0)
+        }
+
+        button.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(20.0)
+            make.right.equalToSuperview().offset(-20.0)
+            make.bottom.equalToSuperview().offset(-20.0)
+            make.height.equalTo(50.0)
         }
     }
 }

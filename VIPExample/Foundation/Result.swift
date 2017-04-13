@@ -6,7 +6,7 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-enum Result<T>: EventResponseDataType {
+enum Result<T> {
     case noContent
     case value(T)
 }

@@ -8,10 +8,12 @@
 
 enum HTTPBinEndpoint: Endpoint {
     case get(with: GetUserParameter)
+    case edit(with: EditUserParameter)
 
     private enum Constant {
         static let baseUrl = "https://httpbin.org"
-        static let path = "get"
+        static let get = "get"
+        static let edit = "put"
 
         enum Key {
             static let name = "name"
@@ -27,22 +29,37 @@ enum HTTPBinEndpoint: Endpoint {
     }
 
     var path: String {
-        return Constant.path
+        switch self {
+        case .get:
+            return Constant.get
+        case .edit:
+            return Constant.edit
+        }
     }
 
     var httpMethod: HTTPMethod {
-        return .GET
+        switch self {
+        case .get:
+            return .GET
+        case .edit:
+            return .PUT
+        }
     }
 
-    var queryParameters: [String : String]? {
-        if case .get(let parameter) = self {
+    var queryParameters: [String: String]? {
+        switch self {
+        case .get(let parameter):
             return [
                 Constant.Key.name: parameter.name,
                 Constant.Key.surname: parameter.surname,
                 Constant.Key.age: "\(parameter.age)",
             ]
+        case .edit(let parameter):
+            return [
+                Constant.Key.name: parameter.name,
+                Constant.Key.surname: parameter.surname,
+                Constant.Key.age: parameter.age,
+            ]
         }
-
-        return nil
     }
 }
