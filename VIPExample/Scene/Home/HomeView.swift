@@ -49,7 +49,7 @@ final class HomeView: UIView, ViewType {
             .map { EventRequest(action: .tap) }
     }
 
-    func update(with provider: Driver<HomeViewModel>) -> Void {
+    func update(with provider: Driver<HomeViewModel>) {
         provider
             .map { (viewModel) -> Bool in
                 if case .loading = viewModel.state {
@@ -92,10 +92,10 @@ final class HomeView: UIView, ViewType {
             .drive(button.rx.title())
             .disposed(by: disposeBag)
     }
-    
+
     // MARK: Private
 
-    private func setUpSubviews() -> Void {
+    private func setUpSubviews() {
         [nameLabel, surnameLabel, ageLabel].forEach { (label) in
             label.textColor = .black
             label.textAlignment = .center

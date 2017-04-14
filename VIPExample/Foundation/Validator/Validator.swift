@@ -7,8 +7,8 @@
 //
 
 protocol Validator {
-    associatedtype T
-    associatedtype E
+    associatedtype Object
+    associatedtype Error
 
-    func validate(object: T) -> E?
+    func validate(object: Object) -> Error?
 }

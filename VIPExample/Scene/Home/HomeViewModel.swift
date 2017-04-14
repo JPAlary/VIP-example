@@ -9,7 +9,7 @@
 struct HomeViewModel {
     let state: ViewState
     let buttonTitle: String
-    
+
     let name: String?
     let surname: String?
     let age: String?

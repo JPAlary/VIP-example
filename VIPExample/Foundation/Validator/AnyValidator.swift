@@ -6,18 +6,18 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-struct AnyValidator<T, E>: Validator {
-    private let _validate: (T) -> E?
+struct AnyValidator<Object, Error>: Validator {
+    private let _validate: (Object) -> Error?
 
     // MARK: Initializer
 
-    init<V: Validator>(base: V) where V.T == T, V.E == E {
+    init<V: Validator>(base: V) where V.Object == Object, V.Error == Error {
         _validate = base.validate
     }
 
     // MARK: Validator
 
-    func validate(object: T) -> E? {
+    func validate(object: Object) -> Error? {
         return _validate(object)
     }
 }

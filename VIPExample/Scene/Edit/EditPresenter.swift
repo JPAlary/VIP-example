@@ -56,7 +56,6 @@ struct EditPresenter: Presenter {
                 buttonTitle: buttonTitleTranslation
             )
         default:
-
             return EditViewModel(
                 placeholder: placeholders,
                 buttonEnabled: buttonEnabledValue(from: response),
@@ -76,7 +75,7 @@ struct EditPresenter: Presenter {
         return buttonEnabled
     }
 
-    private var placeholders: (name: String, surname: String, age: String) {
+    private var placeholders: (name: String, surname: String, age: String) { // swiftlint:disable:this large_tuple
         return (
             name: translator.translation(for: Constant.namePlaceholderKey),
             surname: translator.translation(for: Constant.surnamePlaceholderKey),

@@ -41,7 +41,7 @@ struct EndpointToURLRequestTransformer: Transformer {
                 throw SerializationAppError(error: error)
             }
         }
-        
+
         return request
     }
 }

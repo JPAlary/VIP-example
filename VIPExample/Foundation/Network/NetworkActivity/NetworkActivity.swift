@@ -7,6 +7,6 @@
 //
 
 protocol NetworkActivity {
-    func show() -> Void
-    func hide() -> Void
+    func show()
+    func hide()
 }

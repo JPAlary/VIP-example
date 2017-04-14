@@ -1,0 +1,15 @@
+disabled_rules:
+    - nesting
+
+included:
+    - VIPExample
+
+excluded:
+    - Pods
+line_length:
+    warning: 200
+
+trailing_comma:
+    mandatory_comma: true
+
+warning_threshold: 1

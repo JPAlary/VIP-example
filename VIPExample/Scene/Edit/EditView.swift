@@ -45,7 +45,7 @@ final class EditView: UIView, ViewType {
             .tap
             .asObservable()
             .map { EventRequest(action: .tap) }
-        
+
         let textfields: Observable<EventRequest> = Observable
             .combineLatest(nameTextfield.rx.text, surnameTextfield.rx.text, ageTextfield.rx.text) { ($0, $1, $2) }
             .map { (name, surname, age) -> [String: String] in
@@ -70,7 +70,7 @@ final class EditView: UIView, ViewType {
             .merge()
     }
 
-    func update(with provider: Driver<EditViewModel>) -> Void {
+    func update(with provider: Driver<EditViewModel>) {
         provider
             .map { $0.namePlaceholder }
             .drive(nameTextfield.rx.placeholder)
@@ -114,7 +114,7 @@ final class EditView: UIView, ViewType {
 
     // MARK: Private
 
-    private func setUpSubviews() -> Void {
+    private func setUpSubviews() {
         [nameTextfield, surnameTextfield, ageTextfield].forEach { (textfield) in
             textfield.borderStyle = .none
             textfield.placeholder = ""

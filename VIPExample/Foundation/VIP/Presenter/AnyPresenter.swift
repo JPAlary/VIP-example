@@ -6,18 +6,18 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-final class AnyPresenter<T>: Presenter {
-    private let _handle: (EventResponse) -> T
+final class AnyPresenter<ViewModel>: Presenter {
+    private let _handle: (EventResponse) -> ViewModel
 
     // MARK: Initializer
 
-    init<P: Presenter>(base: P) where P.T == T {
+    init<P: Presenter>(base: P) where P.ViewModel == ViewModel {
         _handle = base.handle
     }
 
     // MARK: Presenter
 
-    func handle(response: EventResponse) -> T {
+    func handle(response: EventResponse) -> ViewModel {
         return _handle(response)
     }
 }

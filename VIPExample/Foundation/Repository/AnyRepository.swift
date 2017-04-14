@@ -16,7 +16,7 @@ final class AnyRepository<T>: Repository {
 
     // MARK: Initializer
 
-    init<R: Repository>(base: R) where R.T == T {
+    init<R: Repository>(base: R) where R.Resource == T {
         _get = base.get
         _create = base.create
         _edit = base.edit

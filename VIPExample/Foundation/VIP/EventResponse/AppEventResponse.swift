@@ -22,11 +22,11 @@ struct AppEventResponse: EventResponse {
     // MARK: EventResponse
 
     var succeed: Bool {
-        guard let _ = error else {
-            return true
+        if nil != error {
+            return false
         }
 
-        return false
+        return true
     }
 
     var data: [String: Any]? {

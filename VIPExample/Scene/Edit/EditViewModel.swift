@@ -21,7 +21,7 @@ struct EditViewModel {
     // MARK: Initializer
 
     init(
-        placeholder: (name: String, surname: String, age: String),
+        placeholder: (name: String, surname: String, age: String), // swiftlint:disable:this large_tuple
         errorNameFieldMessage: String? = nil,
         errorSurnameFieldMessage: String? = nil,
         errorAgeFieldMessage: String? = nil,

@@ -3,20 +3,26 @@ PODS:
     - RxSwift (~> 3.3)
   - RxSwift (3.3.1)
   - SnapKit (3.2.0)
+  - SwiftLint (0.18.1)
+  - SwiftyBeaver (1.2.0)
   - Swinject (2.0.0)
 
 DEPENDENCIES:
   - RxCocoa (~> 3.3.1)
   - RxSwift (~> 3.3.1)
   - SnapKit (~> 3.2)
+  - SwiftLint
+  - SwiftyBeaver
   - Swinject (~> 2.0.0)
 
 SPEC CHECKSUMS:
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
   RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SwiftLint: b467d08f5b25dc3b3cfed243d8e1b74b91714c67
+  SwiftyBeaver: ee865c50ec462ff142f232145057818491c2b344
   Swinject: 2e964a80d70ab09b3949c99032711f89147bfd60
 
-PODFILE CHECKSUM: 4a18e6a3a02ed91e0cf62642b9ac7481f7425e23
+PODFILE CHECKSUM: a8044bf797cc06abe989ee812287f01dda9533ab
 
 COCOAPODS: 1.1.1

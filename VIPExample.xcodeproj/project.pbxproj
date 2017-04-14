@@ -35,6 +35,10 @@
 		E893C3931E9AC20500A7070C /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893C3921E9AC20500A7070C /* EditUserViewController.swift */; };
 		E893C3981E9AD05400A7070C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893C3971E9AD05400A7070C /* Router.swift */; };
 		E893C3A01E9AD0A000A7070C /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893C39F1E9AD0A000A7070C /* MainContainer.swift */; };
+		E893EC8A1EA0C61500BDC907 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893EC891EA0C61500BDC907 /* Logger.swift */; };
+		E893EC8C1EA0C61F00BDC907 /* LoggerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893EC8B1EA0C61F00BDC907 /* LoggerLevel.swift */; };
+		E893EC8E1EA0C64300BDC907 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893EC8D1EA0C64300BDC907 /* AppLogger.swift */; };
+		E893EC901EA0C65900BDC907 /* LoggerInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E893EC8F1EA0C65900BDC907 /* LoggerInterceptor.swift */; };
 		E8D54A921E99510500F08AEE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D54A911E99510500F08AEE /* HomeView.swift */; };
 		E8D54ADE1E9976D500F08AEE /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D54A941E9976D500F08AEE /* AppError.swift */; };
 		E8D54ADF1E9976D500F08AEE /* DeserializationAppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D54A961E9976D500F08AEE /* DeserializationAppError.swift */; };
@@ -143,6 +147,10 @@
 		E893C3921E9AC20500A7070C /* EditUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 		E893C3971E9AD05400A7070C /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		E893C39F1E9AD0A000A7070C /* MainContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
+		E893EC891EA0C61500BDC907 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		E893EC8B1EA0C61F00BDC907 /* LoggerLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerLevel.swift; sourceTree = "<group>"; };
+		E893EC8D1EA0C64300BDC907 /* AppLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		E893EC8F1EA0C65900BDC907 /* LoggerInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerInterceptor.swift; sourceTree = "<group>"; };
 		E8D54A911E99510500F08AEE /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E8D54A941E9976D500F08AEE /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		E8D54A961E9976D500F08AEE /* DeserializationAppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializationAppError.swift; sourceTree = "<group>"; };
@@ -299,6 +307,17 @@
 				E838B0801EA00F290044A4D5 /* AnyRouter.swift */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		E893EC881EA0C61500BDC907 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				E893EC891EA0C61500BDC907 /* Logger.swift */,
+				E893EC8B1EA0C61F00BDC907 /* LoggerLevel.swift */,
+				E893EC8D1EA0C64300BDC907 /* AppLogger.swift */,
+				E893EC8F1EA0C65900BDC907 /* LoggerInterceptor.swift */,
+			);
+			path = Logger;
 			sourceTree = "<group>";
 		};
 		E8D54A931E9976D500F08AEE /* AppError */ = {
@@ -577,6 +596,7 @@
 		E8EFD17B1E9690B80079C1DB /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				E893EC881EA0C61500BDC907 /* Logger */,
 				E81E82D81E9F7D44009CDA26 /* Form */,
 				E81E82CC1E9F7A89009CDA26 /* Validator */,
 				E8D54A931E9976D500F08AEE /* AppError */,
@@ -611,6 +631,7 @@
 				E8EFD14E1E968E3A0079C1DB /* Resources */,
 				78D3D1DE65D1C4AE947EB998 /* [CP] Embed Pods Frameworks */,
 				737D5D90DAAA3674732B8625 /* [CP] Copy Pods Resources */,
+				E893EC911EA1068A00BDC907 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -792,6 +813,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		E893EC911EA1068A00BDC907 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -814,6 +849,7 @@
 				E8D54ADF1E9976D500F08AEE /* DeserializationAppError.swift in Sources */,
 				E838B0851EA020B90044A4D5 /* DictionaryToUserTransformer.swift in Sources */,
 				E8D54AFA1E9976D500F08AEE /* Repository.swift in Sources */,
+				E893EC8A1EA0C61500BDC907 /* Logger.swift in Sources */,
 				E8D54AF81E9976D500F08AEE /* Response.swift in Sources */,
 				E8D54AF01E9976D500F08AEE /* Interceptor.swift in Sources */,
 				E8D54B031E9976D500F08AEE /* Transformer.swift in Sources */,
@@ -826,6 +862,7 @@
 				E8D54B0D1E9976D500F08AEE /* AppEventResponse.swift in Sources */,
 				E8D54AF41E9976D500F08AEE /* NetworkAdapter.swift in Sources */,
 				E857C7A31E9E868500AB0741 /* NoRequestParameterAppError.swift in Sources */,
+				E893EC8C1EA0C61F00BDC907 /* LoggerLevel.swift in Sources */,
 				E81E82E41E9FD37D009CDA26 /* InvalidFormAppError.swift in Sources */,
 				E8D54AE91E9976D500F08AEE /* HTTPBinEndpoint.swift in Sources */,
 				E81E82E01E9F7E3D009CDA26 /* EditPresenter.swift in Sources */,
@@ -861,6 +898,7 @@
 				E8D54AE51E9976D500F08AEE /* AppHTTPErrorHandler.swift in Sources */,
 				E81E82E81E9FDAB7009CDA26 /* EventResponseCode.swift in Sources */,
 				E8D54B0F1E9976D500F08AEE /* EventResponse.swift in Sources */,
+				E893EC901EA0C65900BDC907 /* LoggerInterceptor.swift in Sources */,
 				E838B0831EA01F920044A4D5 /* EventParameterKey.swift in Sources */,
 				E8D54AFE1E9976D500F08AEE /* UserRepository.swift in Sources */,
 				E8D54AE31E9976D500F08AEE /* ParameterTypeAppError.swift in Sources */,
@@ -872,6 +910,7 @@
 				E8EFD17F1E96A3690079C1DB /* HomePresenter.swift in Sources */,
 				E8D54B071E9976D500F08AEE /* ViewState.swift in Sources */,
 				E8D54AED1E9976D500F08AEE /* HTTPErrorHandler.swift in Sources */,
+				E893EC8E1EA0C64300BDC907 /* AppLogger.swift in Sources */,
 				E8D54AEE1E9976D500F08AEE /* HTTPMethod.swift in Sources */,
 				E8D54AF51E9976D500F08AEE /* URLSessionNetworkAdapter.swift in Sources */,
 				E8D54AF61E9976D500F08AEE /* AppResponse.swift in Sources */,

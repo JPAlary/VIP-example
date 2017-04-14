@@ -35,23 +35,27 @@ final class HomeContainer: AppContainer {
 
     // MARK: Private
 
-    private func register() -> Void {
+    private func register() {
         container
-            .register(AnyPresenter<HomeViewModel>.self) { (r) -> AnyPresenter<HomeViewModel> in
-                AnyPresenter(base: HomePresenter(translator: r.resolve(Translator.self)!))
+            .register(AnyPresenter<HomeViewModel>.self) { (resolver) -> AnyPresenter<HomeViewModel> in
+                AnyPresenter(base: HomePresenter(
+                    translator: resolver.resolve(Translator.self)!,
+                    logger: resolver.resolve(Logger.self)!
+                ))
             }
             .inObjectScope(.container)
 
         container
-            .register(AnyRepository<User>.self) { (r) -> AnyRepository<User> in
-                AnyRepository(base: UserRepository(httpClient: r.resolve(HTTPClientType.self)!))
+            .register(AnyRepository<User>.self) { (resolver) -> AnyRepository<User> in
+                AnyRepository(base: UserRepository(httpClient: resolver.resolve(HTTPClientType.self)!))
             }
             .inObjectScope(.container)
 
         container
-            .register(Interactor.self) { (r) -> Interactor in
+            .register(Interactor.self) { (resolver) -> Interactor in
                 HomeInteractor(
-                    repository: r.resolve(AnyRepository<User>.self)!
+                    repository: resolver.resolve(AnyRepository<User>.self)!,
+                    logger: resolver.resolve(Logger.self)!
                 )
             }
             .inObjectScope(.container)
@@ -63,11 +67,11 @@ final class HomeContainer: AppContainer {
             .inObjectScope(.container)
 
         container
-            .register(HomeViewController.self) { (r) -> HomeViewController in
+            .register(HomeViewController.self) { (resolver) -> HomeViewController in
                 HomeViewController(
-                    interactor: r.resolve(Interactor.self)!,
-                    presenter: r.resolve(AnyPresenter<HomeViewModel>.self)!,
-                    router: r.resolve(AnyRouter<Void>.self)!,
+                    interactor: resolver.resolve(Interactor.self)!,
+                    presenter: resolver.resolve(AnyPresenter<HomeViewModel>.self)!,
+                    router: resolver.resolve(AnyRouter<Void>.self)!,
                     viewType: AnyViewType(base: HomeView())
                 )
             }

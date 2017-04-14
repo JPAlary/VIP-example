@@ -6,7 +6,6 @@
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-
 import Foundation
 import RxSwift
 import RxCocoa
@@ -26,7 +25,7 @@ final class URLSessionNetworkAdapter: NetworkAdapter {
 
     func rx_send(request: URLRequest) -> Observable<Response> {
         networkActivity.show()
-        
+
         return Observable.create { [weak self] observer in
             var didHideNetworkActivity = false
             let task = self?.session.dataTask(with: request) { (data, response, error) in

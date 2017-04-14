@@ -21,7 +21,7 @@ final class UIApplicationNetworkActivity: NetworkActivity {
 
     // MARK: NetworkActivity
 
-    func show() -> Void {
+    func show() {
         counter += 1
 
         if false == application.isNetworkActivityIndicatorVisible {
@@ -29,7 +29,7 @@ final class UIApplicationNetworkActivity: NetworkActivity {
         }
     }
 
-    func hide() -> Void {
+    func hide() {
         if counter > 0 {
             counter -= 1
         }

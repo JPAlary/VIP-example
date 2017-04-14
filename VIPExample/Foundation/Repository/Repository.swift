@@ -9,10 +9,10 @@
 import RxSwift
 
 protocol Repository {
-    associatedtype T
+    associatedtype Resource
 
-    func get(with parameter: RepositoryParameter) -> Observable<Result<T>>
-    func create(with parameter: RepositoryParameter) -> Observable<Result<T>>
-    func edit(with parameter: RepositoryParameter) -> Observable<Result<T>>
-    func delete(with parameter: RepositoryParameter) -> Observable<Result<T>>
+    func get(with parameter: RepositoryParameter) -> Observable<Result<Resource>>
+    func create(with parameter: RepositoryParameter) -> Observable<Result<Resource>>
+    func edit(with parameter: RepositoryParameter) -> Observable<Result<Resource>>
+    func delete(with parameter: RepositoryParameter) -> Observable<Result<Resource>>
 }

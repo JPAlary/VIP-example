@@ -34,7 +34,7 @@ final class HomeViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -68,7 +68,7 @@ final class HomeViewController: UIViewController {
         let provider = Observable
             .of(routerResult, output)
             .merge()
-            .asDriver { (e) -> SharedSequence<DriverSharingStrategy, HomeViewModel> in
+            .asDriver { (_) -> SharedSequence<DriverSharingStrategy, HomeViewModel> in
                 return Driver.never()
             }
 

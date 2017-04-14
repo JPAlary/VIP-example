@@ -10,9 +10,9 @@ import UIKit
 import RxSwift
 
 protocol Router {
-    associatedtype T
+    associatedtype Object
 
-    var callback: Observable<T> { get }
+    var callback: Observable<Object> { get }
 
     func route(from root: UIViewController?, request: EventRequest) -> Observable<EventResponse>
 }

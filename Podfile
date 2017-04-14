@@ -8,6 +8,8 @@ target 'VIPExample' do
   pod 'RxCocoa', '~> 3.3.1'
   pod 'Swinject', '~> 2.0.0'
   pod 'SnapKit', '~> 3.2'
+  pod 'SwiftyBeaver'
+  pod 'SwiftLint'
 
   target 'VIPExampleTests' do
     inherit! :search_paths

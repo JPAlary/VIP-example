@@ -8,7 +8,7 @@
 
 enum EventResponseCode {
     case processing
-    case ok
+    case ok // swiftlint:disable:this identifier_name
     case noContent
     case badRequest
     case navigate

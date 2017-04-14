@@ -7,7 +7,7 @@
 //
 
 enum HTTPStatusCode: Int {
-    case ok = 200
+    case ok = 200 // swiftlint:disable:this identifier_name
     case created = 201
     case noContent = 204
     case badRequest = 400

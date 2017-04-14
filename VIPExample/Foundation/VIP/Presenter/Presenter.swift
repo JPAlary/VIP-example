@@ -7,7 +7,7 @@
 //
 
 protocol Presenter {
-    associatedtype T
+    associatedtype ViewModel
 
-    func handle(response: EventResponse) -> T
+    func handle(response: EventResponse) -> ViewModel
 }

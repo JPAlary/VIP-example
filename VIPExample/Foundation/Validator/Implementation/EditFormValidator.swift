@@ -24,7 +24,7 @@ struct EditFormValidator: Validator {
 
     func validate(object: EventRequest) -> FormErrorCollection? {
         var errors = [FormError]()
-        
+
         if let name = object.parameter(named: "name"),
             let error = countLimitValidator.validate(object: name) {
             errors.append(FormError(path: "name", message: error.messageKey))

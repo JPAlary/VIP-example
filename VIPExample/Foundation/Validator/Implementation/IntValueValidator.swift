@@ -17,11 +17,11 @@ struct IntValueValidator: Validator {
         if object.characters.count == 0 {
             return nil
         }
-        
-        guard let _ = Int(object) else {
-            return DefaultAppError(messageKey: Constant.messageKey)
+
+        if nil != Int(object) {
+            return nil
         }
 
-        return nil
+        return DefaultAppError(messageKey: Constant.messageKey)
     }
 }

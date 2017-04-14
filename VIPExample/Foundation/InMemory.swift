@@ -25,7 +25,7 @@ final class InMemory<T> {
         return Observable.just(value)
     }
 
-    var rx_value: Observable<T> {
+    var rxValue: Observable<T> {
         return Observable.just(value)
     }
 }

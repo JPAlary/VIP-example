@@ -12,7 +12,7 @@ struct AppHTTPErrorHandler: HTTPErrorHandler {
 
     func handle(response: Response) -> Error {
         // All the error logic error of the api should be handle here
-        
+
         return NetworkAppError(error: nil)
     }
 }

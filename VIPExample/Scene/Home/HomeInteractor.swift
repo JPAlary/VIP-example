@@ -10,23 +10,25 @@ import RxSwift
 
 final class HomeInteractor: Interactor {
     private let repository: AnyRepository<User>
+    private let logger: Logger
 
     // MARK: Initializer
 
-    init(repository: AnyRepository<User>) {
+    init(repository: AnyRepository<User>, logger: Logger) {
         self.repository = repository
+        self.logger = logger
     }
 
     // MARK: Interactor
 
     func handle(request: EventRequest) -> Observable<EventResponse> {
         if request.action != .viewDidLoad {
-            fatalError("Action \(request.action) can be handle by `HomeInteractor`")
+            logger.log(level: .error, message: "Action \(request.action) can be handle by `HomeInteractor`")
         }
 
         let loading: Observable<EventResponse> = Observable
             .just(LoadingEventResponse())
-        
+
         let data: Observable<EventResponse> = repository
             .get(with: GetUserParameter(name: "John", surname: "Doe", age: 20))
             .map({ (result) -> AppEventResponse in

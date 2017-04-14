@@ -9,7 +9,7 @@
 import RxSwift
 
 protocol Interceptor {
-    associatedtype T
+    associatedtype Input
 
-    func intercept(chain: InterceptorChain<T>) -> Observable<T>
+    func intercept(chain: InterceptorChain<Input>) -> Observable<Input>
 }

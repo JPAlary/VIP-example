@@ -11,11 +11,13 @@ import RxCocoa
 
 struct HomePresenter: Presenter {
     private let translator: Translator
+    private let logger: Logger
 
     // MARK: Initializer
 
-    init(translator: Translator) {
+    init(translator: Translator, logger: Logger) {
         self.translator = translator
+        self.logger = logger
     }
 
     // MARK: Presenter
@@ -43,7 +45,7 @@ struct HomePresenter: Presenter {
             var state: ViewState
 
             if let appError = response.error as? AppError {
-                assertionFailure("Should be instance of AppError")
+                logger.log(level: .warning, message: "HomePresenter - response.error should be instance of AppError")
                 state = .error(message: translator.translation(for: appError.messageKey))
             } else {
                 state = .error(message: translator.translation(for: "error.generic.message"))

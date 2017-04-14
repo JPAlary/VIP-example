@@ -35,16 +35,16 @@ final class EditContainer: AppContainer {
 
     // MARK: Private
 
-    private func register() -> Void {
+    private func register() {
         container
-            .register(AnyPresenter<EditViewModel>.self) { (r) -> AnyPresenter<EditViewModel> in
-                AnyPresenter(base: EditPresenter(translator: r.resolve(Translator.self)!))
+            .register(AnyPresenter<EditViewModel>.self) { (resolver) -> AnyPresenter<EditViewModel> in
+                AnyPresenter(base: EditPresenter(translator: resolver.resolve(Translator.self)!))
             }
             .inObjectScope(.container)
 
         container
-            .register(AnyRepository<User>.self) { (r) -> AnyRepository<User> in
-                AnyRepository(base: UserRepository(httpClient: r.resolve(HTTPClientType.self)!))
+            .register(AnyRepository<User>.self) { (resolver) -> AnyRepository<User> in
+                AnyRepository(base: UserRepository(httpClient: resolver.resolve(HTTPClientType.self)!))
             }
             .inObjectScope(.container)
 
@@ -58,28 +58,29 @@ final class EditContainer: AppContainer {
             .inObjectScope(.container)
 
         container
-            .register(Interactor.self) { (r) -> Interactor in
+            .register(Interactor.self) { (resolver) -> Interactor in
                 EditInteractor(
                     inMemory: InMemory(defaultValue: [String: String]()),
-                    validator: r.resolve(AnyValidator<EventRequest, FormErrorCollection>.self)!,
-                    repository: r.resolve(AnyRepository<User>.self)!,
-                    transformer: AnyTransformer(base: DictionaryToUserTransformer())
+                    validator: resolver.resolve(AnyValidator<EventRequest, FormErrorCollection>.self)!,
+                    repository: resolver.resolve(AnyRepository<User>.self)!,
+                    transformer: AnyTransformer(base: DictionaryToUserTransformer()),
+                    logger: resolver.resolve(Logger.self)!
                 )
             }
             .inObjectScope(.container)
 
         container
-            .register(AnyRouter<User>.self) { (r) -> AnyRouter<User> in
+            .register(AnyRouter<User>.self) { (_) -> AnyRouter<User> in
                 AnyRouter(base: EditRouter())
             }
             .inObjectScope(.container)
 
         container
-            .register(EditUserViewController.self) { (r) -> EditUserViewController in
+            .register(EditUserViewController.self) { (resolver) -> EditUserViewController in
                 EditUserViewController(
-                    interactor: r.resolve(Interactor.self)!,
-                    presenter: r.resolve(AnyPresenter<EditViewModel>.self)!,
-                    router: r.resolve(AnyRouter<User>.self)!,
+                    interactor: resolver.resolve(Interactor.self)!,
+                    presenter: resolver.resolve(AnyPresenter<EditViewModel>.self)!,
+                    router: resolver.resolve(AnyRouter<User>.self)!,
                     viewType: AnyViewType(base: EditView())
                 )
             }

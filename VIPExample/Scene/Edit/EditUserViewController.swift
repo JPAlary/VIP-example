@@ -34,7 +34,7 @@ final class EditUserViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -87,10 +87,10 @@ final class EditUserViewController: UIViewController {
             }
             .withLatestFrom(Observable.just(presenter)) { $0 }
             .map { $1.handle(response: $0) }
-            .asDriver { (e) -> SharedSequence<DriverSharingStrategy, EditViewModel> in
+            .asDriver { (_) -> SharedSequence<DriverSharingStrategy, EditViewModel> in
                 return Driver.never()
             }
-        
+
         viewType.update(with: provider)
     }
 }

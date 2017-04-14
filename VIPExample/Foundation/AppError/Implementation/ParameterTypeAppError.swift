@@ -29,4 +29,3 @@ struct ParameterTypeAppError: AppError {
         return Constant.translationKey
     }
 }
-

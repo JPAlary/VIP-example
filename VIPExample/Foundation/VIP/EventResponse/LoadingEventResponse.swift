@@ -16,7 +16,7 @@ struct LoadingEventResponse: EventResponse {
 
     var data: [String: Any]? {
         return [
-            EventParameterKey.viewState: ViewState.loading
+            EventParameterKey.viewState: ViewState.loading,
         ]
     }
 

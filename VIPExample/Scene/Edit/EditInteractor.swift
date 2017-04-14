@@ -13,19 +13,22 @@ final class EditInteractor: Interactor {
     private let validator: AnyValidator<EventRequest, FormErrorCollection>
     private let repository: AnyRepository<User>
     private let transformer: AnyTransformer<[String: String], User>
+    private let logger: Logger
 
     // MARK: Initializer
 
     init(
-        inMemory: InMemory<[String: String]>, 
+        inMemory: InMemory<[String: String]>,
         validator: AnyValidator<EventRequest, FormErrorCollection>,
         repository: AnyRepository<User>,
-        transformer: AnyTransformer<[String: String], User>
+        transformer: AnyTransformer<[String: String], User>,
+        logger: Logger
     ) {
         self.inMemory = inMemory
         self.validator = validator
         self.repository = repository
         self.transformer = transformer
+        self.logger = logger
     }
 
     // MARK: Interactor
@@ -39,6 +42,8 @@ final class EditInteractor: Interactor {
         default: break
         }
 
+        logger.log(level: .warning, message: "EditInteractor - \(request.action) can be handle here.")
+
         return Observable.never()
     }
 
@@ -46,6 +51,8 @@ final class EditInteractor: Interactor {
 
     private func handleUserInfo(from request: EventRequest) -> Observable<EventResponse> {
         guard let parameter = request.parameters else {
+            logger.log(level: .warning, message: "EditInteractor - No parameter in request.")
+
             return Observable.just(AppEventResponse(code: .badRequest, error: NoRequestParameterAppError()))
         }
 
@@ -56,8 +63,9 @@ final class EditInteractor: Interactor {
             .update(with: parameter)
             .map({ (parameter) -> EventResponse in
                 var objectValidated = false
+                let object = try? transformer.transform(object: parameter)
 
-                if let _ = try? transformer.transform(object: parameter) {
+                if nil != object {
                     objectValidated = true
                 }
 
@@ -67,7 +75,7 @@ final class EditInteractor: Interactor {
                         error: InvalidFormAppError(),
                         data: [
                             EventParameterKey.value: error,
-                            EventParameterKey.objectValidated: objectValidated
+                            EventParameterKey.objectValidated: objectValidated,
                         ]
                     )
                 }

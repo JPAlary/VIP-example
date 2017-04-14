@@ -76,4 +76,3 @@ final class AppHTTPClientType: HTTPClientType {
             .flatMap { responseChain.proceed(object: $0) }
     }
 }
-

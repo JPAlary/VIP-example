@@ -35,7 +35,7 @@ final class MainContainer: AppContainer {
 
     // MARK: Private
 
-    private func register() -> Void {
+    private func register() {
         container
             .register(NetworkActivity.self) { (_) -> NetworkActivity in
                 UIApplicationNetworkActivity(application: UIApplication.shared)
@@ -49,20 +49,33 @@ final class MainContainer: AppContainer {
             .inObjectScope(.container)
 
         container
-            .register(NetworkAdapter.self) { (r) -> NetworkAdapter in
+            .register(Logger.self) { (_) -> Logger in
+                AppLogger()
+            }
+            .inObjectScope(.container)
+
+        container
+            .register(NetworkAdapter.self) { (resolver) -> NetworkAdapter in
                 URLSessionNetworkAdapter(
-                    networkActivity: r.resolve(NetworkActivity.self)!,
+                    networkActivity: resolver.resolve(NetworkActivity.self)!,
                     session: URLSession(configuration: .ephemeral)
                 )
             }
             .inObjectScope(.container)
 
         container
-            .register(HTTPClientType.self) { (r) -> HTTPClientType in
+            .register(InterceptorChain<URLRequest>.self) { (resolver) -> InterceptorChain<URLRequest> in
+                InterceptorChain<URLRequest>()
+                    .add(interceptor: AnyInterceptor(base: LoggerInterceptor(logger: resolver.resolve(Logger.self)!)))
+            }
+            .inObjectScope(.container)
+
+        container
+            .register(HTTPClientType.self) { (resolver) -> HTTPClientType in
                 AppHTTPClientType(
                     transformer: AnyTransformer(base: EndpointToURLRequestTransformer()),
-                    networkAdapter: r.resolve(NetworkAdapter.self)!,
-                    requestChain: InterceptorChain<URLRequest>(),
+                    networkAdapter: resolver.resolve(NetworkAdapter.self)!,
+                    requestChain: resolver.resolve(InterceptorChain<URLRequest>.self)!,
                     responseChain: InterceptorChain<Response>(),
                     httpErrorHandler: AppHTTPErrorHandler()
                 )

@@ -11,12 +11,12 @@ import RxCocoa
 import RxSwift
 
 protocol ViewType {
-    associatedtype T
+    associatedtype ViewModel
 
     var view: UIView { get }
 
     func request() -> Observable<EventRequest>
-    func update(with provider: Driver<T>) -> Void
+    func update(with provider: Driver<ViewModel>)
 }
 
 extension ViewType where Self: UIView {
