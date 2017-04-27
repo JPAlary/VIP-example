@@ -1,12 +1,14 @@
 //
-//  FormError.swift
+//  Route.swift
 //  VIPExample
 //
 //  Created by Jp Alary on 28/04/2017.
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-struct FormError {
-    let path: String
-    let message: String
+import UIKit
+
+struct Route {
+    let from: UIViewController?
+    let data: Any?
 }

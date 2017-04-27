@@ -19,8 +19,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
     ) -> Bool {
         let window = UIWindow()
-        window.rootViewController = HomeContainer(container: container.getChild())
-            .resolve(serviceType: HomeViewController.self)!
+        window.rootViewController = ShowUserContainer(container: container.getChild())
+            .resolve(serviceType: UIViewController.self)!
 
         self.window = window
         self.window?.makeKeyAndVisible()

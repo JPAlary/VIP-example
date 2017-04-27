@@ -1,12 +1,13 @@
 //
-//  EditViewModel.swift
+//  EditUserViewModel.swift
 //  VIPExample
 //
 //  Created by Jean-Pierre Alary on 12/04/2017.
 //  Copyright © 2017 Jp. All rights reserved.
 //
 
-struct EditViewModel {
+struct EditUserViewModel {
+    let state: ViewState
     let namePlaceholder: String
     let surnamePlaceholder: String
     let agePlaceholder: String
@@ -21,6 +22,7 @@ struct EditViewModel {
     // MARK: Initializer
 
     init(
+        state: ViewState,
         placeholder: (name: String, surname: String, age: String), // swiftlint:disable:this large_tuple
         errorNameFieldMessage: String? = nil,
         errorSurnameFieldMessage: String? = nil,
@@ -28,6 +30,7 @@ struct EditViewModel {
         buttonEnabled: Bool,
         buttonTitle: String
     ) {
+        self.state = state
         self.namePlaceholder = placeholder.name
         self.surnamePlaceholder = placeholder.surname
         self.agePlaceholder = placeholder.age

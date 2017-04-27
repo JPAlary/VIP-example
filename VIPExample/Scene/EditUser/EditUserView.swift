@@ -1,5 +1,5 @@
 //
-//  EditView.swift
+//  EditUserView.swift
 //  VIPExample
 //
 //  Created by Jean-Pierre Alary on 12/04/2017.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-final class EditView: UIView, ViewType {
+final class EditUserView: UIView {
     private let disposeBag: DisposeBag
     private let nameTextfield: UITextField
     private let surnameTextfield: UITextField
@@ -37,76 +37,62 @@ final class EditView: UIView, ViewType {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: ViewType
+    // MARK: Public
 
-    func request() -> Observable<EventRequest> {
-        let tap: Observable<EventRequest> = button
+    var event: Observable<EditUserCommand.Request> {
+        let tap: Observable<EditUserCommand.Request> = button
             .rx
             .tap
             .asObservable()
-            .map { EventRequest(action: .tap) }
+            .map { EditUserCommand.Request.edit(nil) }
 
-        let textfields: Observable<EventRequest> = Observable
-            .combineLatest(nameTextfield.rx.text, surnameTextfield.rx.text, ageTextfield.rx.text) { ($0, $1, $2) }
-            .map { (name, surname, age) -> [String: String] in
-                var value = [String: String]()
-
-                if let name = name {
-                    value["name"] = name
-                }
-                if let surname = surname {
-                    value["surname"] = surname
-                }
-                if let age = age {
-                    value["age"] = age
-                }
-
-                return value
+        let textfields: Observable<EditUserCommand.Request> = Observable
+            .combineLatest(nameTextfield.rx.text, surnameTextfield.rx.text, ageTextfield.rx.text) { name, surname, age in
+                return EditUserCommand.Request.value(name: name, surname: surname, age: age)
             }
-            .map { EventRequest(parameters: $0, action: .userInfo) }
 
         return Observable
             .of(tap, textfields)
             .merge()
     }
 
-    func update(with provider: Driver<EditViewModel>) {
-        provider
+    func update(with provider: Driver<EditUserViewModel>?) {
+        provider?
             .map { $0.namePlaceholder }
             .drive(nameTextfield.rx.placeholder)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.surnamePlaceholder }
             .drive(surnameTextfield.rx.placeholder)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.agePlaceholder }
             .drive(ageTextfield.rx.placeholder)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.buttonTitle }
             .drive(button.rx.title())
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.buttonEnabled }
             .drive(button.rx.isEnabled)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { nil != $0.errorNameFieldMessage }
             .drive(nameTextfield.rx.errorState)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { nil != $0.errorSurnameFieldMessage }
             .drive(surnameTextfield.rx.errorState)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { nil != $0.errorAgeFieldMessage }
             .drive(ageTextfield.rx.errorState)
             .disposed(by: disposeBag)

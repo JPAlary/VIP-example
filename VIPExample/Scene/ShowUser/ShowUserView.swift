@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  ShowUserView.swift
 //  VIPExample
 //
 //  Created by Jean-Pierre Alary on 08/04/2017.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-final class HomeView: UIView, ViewType {
+final class ShowUserView: UIView {
     private let disposeBag = DisposeBag()
     private let nameLabel: UILabel
     private let surnameLabel: UILabel
@@ -39,18 +39,18 @@ final class HomeView: UIView, ViewType {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: ViewType
+    // MARK: Public
 
-    func request() -> Observable<EventRequest> {
+    var event: Observable<Void> {
         return button
             .rx
             .tap
             .asObservable()
-            .map { EventRequest(action: .tap) }
+            .share()
     }
 
-    func update(with provider: Driver<HomeViewModel>) {
-        provider
+    func update(with provider: Driver<ShowUserViewModel>?) {
+        provider?
             .map { (viewModel) -> Bool in
                 if case .loading = viewModel.state {
                     return true
@@ -61,7 +61,7 @@ final class HomeView: UIView, ViewType {
             .drive(activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .drive(onNext: { (viewModel) in
                 switch viewModel.state {
                 case .error(let message):
@@ -72,22 +72,22 @@ final class HomeView: UIView, ViewType {
             })
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.name }
             .drive(nameLabel.rx.text)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.surname }
             .drive(surnameLabel.rx.text)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.age }
             .drive(ageLabel.rx.text)
             .disposed(by: disposeBag)
 
-        provider
+        provider?
             .map { $0.buttonTitle }
             .drive(button.rx.title())
             .disposed(by: disposeBag)

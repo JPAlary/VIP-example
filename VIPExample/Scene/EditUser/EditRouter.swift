@@ -24,17 +24,15 @@ final class EditRouter: Router {
         return subject.asObservable()
     }
 
-    func route(from root: UIViewController?, request: EventRequest) -> Observable<EventResponse> {
-        root?.dismiss(animated: true, completion: nil)
+    func perform(route: Route) {
+        route.from?.dismiss(animated: true, completion: nil)
 
-        guard let user: User = request.dataValue() else {
+        guard let user = route.data as? User else {
             assertionFailure("Should have User object")
 
-            return Observable.never()
+            return
         }
 
         subject.asObserver().onNext(user)
-
-        return Observable.never()
     }
 }
